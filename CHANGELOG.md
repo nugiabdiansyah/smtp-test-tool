@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.1.0] — 2026-05-19
+
+### Added
+
+- **Full email delivery** — after `RCPT TO`, the tool now issues `DATA` and sends a proper RFC 2822 email (From, To, Subject, Date, Message-Id, MIME headers, body) so the test message actually arrives in the recipient's inbox
+
+### Changed
+
+- SMTP sequence extended: `GREETING → EHLO → [STARTTLS] → AUTH → MAIL FROM → RCPT TO → DATA → [headers+body] → QUIT`
+- "Connection successful" now means the message was queued by the server, not just that credentials were accepted
+
+---
+
 ## [1.0.0] — 2026-05-19
 
 ### Added

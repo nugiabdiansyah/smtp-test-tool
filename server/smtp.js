@@ -162,10 +162,42 @@ function runSmtpTest(config, emit) {
 
       case 'RCPTTO_SENT':
         if (code === 250) {
+          state = 'DATA_SENT';
+          sendLine('DATA');
+        } else {
+          fail(`RCPT TO rejected: ${line}`);
+        }
+        break;
+
+      case 'DATA_SENT':
+        if (code === 354) {
+          const date = new Date().toUTCString();
+          const msgId = `<${Date.now()}.${Math.random().toString(36).slice(2)}@smtp-test-tool>`;
+          const bodyLines = [
+            `From: ${from}`,
+            `To: ${to}`,
+            `Subject: SMTP test from ${host}`,
+            `Date: ${date}`,
+            `Message-Id: ${msgId}`,
+            `MIME-Version: 1.0`,
+            `Content-Type: text/plain; charset=utf-8`,
+            ``,
+            `This is a test message sent by SMTP Test Tool.`,
+            `.`,
+          ];
+          for (const l of bodyLines) sendLine(l);
+          state = 'BODY_SENT';
+        } else {
+          fail(`DATA rejected: ${line}`);
+        }
+        break;
+
+      case 'BODY_SENT':
+        if (code === 250) {
           state = 'QUIT_SENT';
           sendLine('QUIT');
         } else {
-          fail(`RCPT TO rejected: ${line}`);
+          fail(`Message rejected: ${line}`);
         }
         break;
 
