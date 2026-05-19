@@ -37,6 +37,12 @@ test('accepts IP address as host', () => {
   assert.equal(result.valid, true);
 });
 
+test('rejects out-of-range IP address', () => {
+  const result = validateConfig({ ...valid, host: '300.300.300.300' });
+  assert.equal(result.valid, false);
+  assert.ok(result.errors.host);
+});
+
 test('rejects port 0', () => {
   const result = validateConfig({ ...valid, port: 0 });
   assert.equal(result.valid, false);

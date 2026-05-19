@@ -2,8 +2,12 @@
 function isValidHostname(str) {
   if (!str || typeof str !== 'string') return false;
   const hostname = /^[a-zA-Z0-9]([a-zA-Z0-9\-.]{0,251}[a-zA-Z0-9])?$/;
-  const ipv4 = /^(\d{1,3}\.){3}\d{1,3}$/;
-  return hostname.test(str) || ipv4.test(str);
+  const ipv4 = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+  const ipv4Match = ipv4.exec(str);
+  if (ipv4Match) {
+    return ipv4Match.slice(1).every(octet => Number(octet) <= 255);
+  }
+  return hostname.test(str);
 }
 
 function isValidEmail(str) {
