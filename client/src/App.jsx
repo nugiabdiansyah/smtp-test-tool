@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import SmtpForm from './components/SmtpForm.jsx'
 import ConversationLog from './components/ConversationLog.jsx'
 
@@ -8,12 +8,17 @@ export default function App() {
   const [logLines, setLogLines] = useState([])
   const [isLive, setIsLive] = useState(false)
   const [testSuccess, setTestSuccess] = useState(null)
+  const esRef = useRef(null)
 
   useEffect(() => {
     fetch('/api/presets')
       .then(r => r.json())
       .then(setPresets)
       .catch(() => {})
+  }, [])
+
+  useEffect(() => {
+    return () => esRef.current?.close()
   }, [])
 
   const handleTest = async (formData) => {
@@ -47,6 +52,7 @@ export default function App() {
 
     const { id } = await res.json()
     const es = new EventSource(`/api/test/stream/${id}`)
+    esRef.current = es
 
     es.onmessage = (e) => {
       const event = JSON.parse(e.data)
@@ -58,12 +64,14 @@ export default function App() {
         setIsLive(false)
         setIsLoading(false)
         es.close()
+        esRef.current = null
       } else if (event.type === 'error') {
         setLogLines(prev => [...prev, { type: 'error', dir: 'recv', text: event.message }])
         setTestSuccess(false)
         setIsLive(false)
         setIsLoading(false)
         es.close()
+        esRef.current = null
       }
     }
 
@@ -72,6 +80,7 @@ export default function App() {
       setIsLoading(false)
       setTestSuccess(false)
       es.close()
+      esRef.current = null
     }
 
     return {}
