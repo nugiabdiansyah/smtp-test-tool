@@ -55,10 +55,10 @@ body {
 .field-group-server   { grid-column: 1; }
 .field-group-port     { grid-column: 2; }
 .field-group-security { grid-column: 3; }
-.field-group-username { grid-column: 1 / 3; }
-.field-group-password { grid-column: 3; }
-.field-group-from     { grid-column: 1 / 3; }
-.field-group-to       { grid-column: 3; }
+.field-group-username { grid-column: 1 / 2; }
+.field-group-password { grid-column: 2 / 4; }
+.field-group-from     { grid-column: 1 / 2; }
+.field-group-to       { grid-column: 2 / 4; }
 .field-group-submit   { grid-column: 1 / -1; }
 
 @media (max-width: 768px) {
