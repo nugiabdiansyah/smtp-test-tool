@@ -45,11 +45,15 @@ export default function SmtpForm({ presets, onTest, isLoading }) {
     if (name === 'host' && value !== presets.find(p => p.name === activePreset)?.host) {
       setActivePreset(null)
     }
-    if (name === 'port' && value !== activePort) {
+    if (name === 'port') {
       setActivePort(value)
+      const currentPreset = presets.find(p => p.name === activePreset)
+      if (currentPreset && value !== String(currentPreset.port)) {
+        setActivePreset(null)
+      }
     }
     if (fieldErrors[name]) {
-      setFieldErrors(e => { const n = { ...e }; delete n[name]; return n })
+      setFieldErrors(prev => { const n = { ...prev }; delete n[name]; return n })
     }
   }
 
