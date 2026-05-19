@@ -189,10 +189,8 @@ function runSmtpTest(config, emit) {
 
     if (security === 'ssl') {
       socket = tls.connect({ host, port, rejectUnauthorized: false });
-      socket.once('secureConnect', () => clearTimeout(timeoutId));
     } else {
       socket = net.connect({ host, port });
-      socket.once('connect', () => clearTimeout(timeoutId));
     }
 
     socket.on('data', onData);
