@@ -171,7 +171,11 @@ function runSmtpTest(config, emit) {
 
       case 'DATA_SENT':
         if (code === 354) {
-          const date = new Date().toUTCString();
+          const _d = new Date(Date.now() + 7 * 60 * 60 * 1000);
+          const _days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+          const _mons = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+          const _p = n => String(n).padStart(2, '0');
+          const date = `${_days[_d.getUTCDay()]}, ${_p(_d.getUTCDate())} ${_mons[_d.getUTCMonth()]} ${_d.getUTCFullYear()} ${_p(_d.getUTCHours())}:${_p(_d.getUTCMinutes())}:${_p(_d.getUTCSeconds())} +0700`;
           const msgId = `<${Date.now()}.${Math.random().toString(36).slice(2)}@smtp-test-tool>`;
           const bodyLines = [
             `From: ${from}`,
