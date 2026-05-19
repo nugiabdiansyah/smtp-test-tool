@@ -62,6 +62,8 @@ function runSmtpTest(config, emit) {
       ehloCapabilities = [];
       state = 'EHLO2_SENT';
       socket.on('data', onData);
+      socket.on('error', (err) => fail(`TLS error: ${err.message}`));
+      socket.on('close', () => { if (!destroyed) fail('Connection closed unexpectedly'); });
       sendLine('EHLO localhost');
     });
     upgraded.once('error', (err) => fail(`TLS error: ${err.message}`));

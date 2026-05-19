@@ -54,6 +54,10 @@ app.get('/api/test/stream/:id', (req, res) => {
   req.on('close', () => destroy());
 });
 
+app.use('/api', (req, res) => {
+  res.status(404).json({ error: 'Not found' });
+});
+
 if (process.env.NODE_ENV === 'production') {
   const clientDist = path.join(__dirname, '..', 'client', 'dist');
   app.use(express.static(clientDist));
