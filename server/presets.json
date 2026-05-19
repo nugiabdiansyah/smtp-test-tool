@@ -1,4 +1,6 @@
 [
+  { "name": "Excellent",   "host": "relay.excellent.co.id",    "port": 587, "security": "tls" },
+  { "name": "Aktiva",   "host": "relay.aktiva.co.id",    "port": 587, "security": "tls" },
   { "name": "Sendgrid",   "host": "smtp.sendgrid.net",    "port": 587, "security": "tls" },
   { "name": "Mailgun",    "host": "smtp.mailgun.org",     "port": 587, "security": "tls" },
   { "name": "SMTP2GO",    "host": "mail.smtp2go.com",     "port": 587, "security": "tls" },
